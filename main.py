@@ -49,7 +49,7 @@ class Board:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.board = [["[None]" for i in range(x)] for j in range(y)]
+        self.board = [["[None]" for i in range(y)] for j in range(x)]
 
     def add(self, creatures, x, y):
         if x < self.x and y < self.y:
@@ -75,7 +75,7 @@ class Board:
     def __repr__(self):
         return str(self.board)
 
-    def printb(self):
+    def printboard(self):
         for i in range(self.x):
             for j in range(self.y):
                 print(self.board[i][j], end=" ")
@@ -88,9 +88,9 @@ if __name__ == "__main__":
     paula = Cow("Paula")
     wuffi = Wolf("Wuffi")
     hanz = Wolf("HanZ")
-    Board = Board(24, 24)               #Fix IndexError: list index out of range Bug for 80x24
-    Board.add(paula, 0, 0)
-    Board.add(hanz, 0, 1)
+    board = Board(80, 24)               #Fix IndexError: list index out of range Bug for 80x24
+    #board.add(paula, 0, 0)
+    #board.add(hanz, 0, 1)
 
     print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
     print(f"{Grassblock.name} has {Grassblock.hp} hp with ID {Grassblock.id}")
@@ -101,4 +101,4 @@ if __name__ == "__main__":
     print(equals(muuukuh, wuffi))
     print()
     print("\033[1m" + "\033[4m" + "Infos über Board" + "\033[0m")
-    Board.printb()
+    board.printboard()
