@@ -88,9 +88,9 @@ if __name__ == "__main__":
     paula = Cow("Paula")
     wuffi = Wolf("Wuffi")
     hanz = Wolf("HanZ")
-    board = Board(80, 24)               #Fix IndexError: list index out of range Bug for 80x24
-    #board.add(paula, 0, 0)
-    #board.add(hanz, 0, 1)
+    board = Board(80, 24)
+    board.add(paula, 0, 0)
+    board.add(hanz, 0, 1)
 
     print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
     print(f"{Grassblock.name} has {Grassblock.hp} hp with ID {Grassblock.id}")
