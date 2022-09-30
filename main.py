@@ -88,9 +88,16 @@ if __name__ == "__main__":
     paula = Cow("Paula")
     wuffi = Wolf("Wuffi")
     hanz = Wolf("HanZ")
+    paul = Grass("Paul")
+
+
     board = Board(80, 24)
     board.add(paula, 0, 0)
     board.add(hanz, 0, 1)
+    board.add(wuffi, 1, 0)
+    board.add(muuukuh, 1, 1)
+    board.add(Grassblock, 2, 0)
+    board.add(paul, 2, 1)
 
     print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
     print(f"{Grassblock.name} has {Grassblock.hp} hp with ID {Grassblock.id}")
