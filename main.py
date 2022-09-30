@@ -1,4 +1,4 @@
-import numpy
+#import numpy
 
 
 class Creatures:
@@ -40,31 +40,65 @@ class Wolf(Animal):
 
 def equals(typea, typeb):
     if typea.__class__ == typeb.__class__:
-        return ("Twins")
+        return "Twins"
     else:
-        return ("No Twins")
+        return "No Twins"
 
 
 class Board:
-    numpy.empty((80, 24), dtype=object)
-    def __init__(self):
-        self.board = np.empty((80, 24), dtype=object)
-        for i in range(80):
-            for j in range(24):
-                self.board[i][j] = Grass("Grass")
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.board = [["[None]" for i in range(x)] for j in range(y)]
+
+    def add(self, creatures, x, y):
+        if x < self.x and y < self.y:
+            self.board[x][y] = "[" + creatures.name + "]"
+        else:
+            print("Out of range")
+
+    def get(self, x, y):
+        if x < self.x and y < self.y:
+            return self.board[x][y]
+        else:
+            print("Out of range")
+
+    def remove(self, x, y):
+        if x < self.x and y < self.y:
+            self.board[x][y] = None
+        else:
+            print("Out of range")
+
+    def __str__(self):
+        return str(self.board)
+
+    def __repr__(self):
+        return str(self.board)
+
+    def printb(self):
+        for i in range(self.x):
+            for j in range(self.y):
+                print(self.board[i][j], end=" ")
+            print()
 
 
 if __name__ == "__main__":
-    Wheatblock = Grass("Grass")
-    Cow = Cow("MuuuKuh")
-    Wolf = Wolf("Wuffi")
+    Grassblock = Grass("Grass")
+    muuukuh = Cow("MuuuKuh")
+    paula = Cow("Paula")
+    wuffi = Wolf("Wuffi")
+    hanz = Wolf("HanZ")
+    Board = Board(24, 24)               #Fix IndexError: list index out of range Bug for 80x24
+    Board.add(paula, 0, 0)
+    Board.add(hanz, 0, 1)
 
-
-
-    #print(f"{Wheatblock.name} has {Wheatblock.hp} hp with ID {Wheatblock.id}")
-    #print(f"{Cow.name} has {Cow.hp} hp with ID {Cow.id}")
-    #print(f"{Wolf.name} has {Wolf.hp} hp with ID {Wolf.id}")
-    #print(equals(Cow, Wolf))
-
-
-
+    print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
+    print(f"{Grassblock.name} has {Grassblock.hp} hp with ID {Grassblock.id}")
+    print(f"{muuukuh.name} has {muuukuh.hp} hp with ID {muuukuh.id}")
+    print(f"{wuffi.name} has {wuffi.hp} hp with ID {wuffi.id}")
+    print()
+    print("\033[1m" + "\033[4m" + "Infos über Vergleich" + "\033[0m")
+    print(equals(muuukuh, wuffi))
+    print()
+    print("\033[1m" + "\033[4m" + "Infos über Board" + "\033[0m")
+    Board.printb()
