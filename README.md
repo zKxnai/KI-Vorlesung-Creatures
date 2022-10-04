@@ -37,3 +37,12 @@ board.printboard()
 [None] [None] ... [None] [None]  
 [None] [None] ... [None] [None]  
 [None] [None] ... [None] [None]
+```
+
+## Übung 4
+Boardaktualisierung ohne Flackern.
+
+Beispiel:
+```
+t.b.a
+```

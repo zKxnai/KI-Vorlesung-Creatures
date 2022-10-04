@@ -1,5 +1,4 @@
-#import numpy
-
+import time
 
 class Creatures:
     def __init__(self, name):
@@ -49,11 +48,11 @@ class Board:
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.board = [["[None]" for i in range(y)] for j in range(x)]
+        self.board = [[" " for i in range(y)] for j in range(x)]
 
     def add(self, creatures, x, y):
         if x < self.x and y < self.y:
-            self.board[x][y] = "[" + creatures.name + "]"
+            self.board[x][y] += creatures.name
         else:
             print("Out of range")
 
@@ -69,43 +68,41 @@ class Board:
         else:
             print("Out of range")
 
-    def __str__(self):
-        return str(self.board)
-
-    def __repr__(self):
-        return str(self.board)
-
     def printboard(self):
+        boardstring = ""
         for i in range(self.x):
             for j in range(self.y):
-                print(self.board[i][j], end=" ")
-            print()
+                #print(self.board[i][j], end=" ")
+                boardstring += self.board[i][j] + " "
+            #print()
+            boardstring += "\n"
+        return boardstring
 
 
 if __name__ == "__main__":
-    Grassblock = Grass("Grass")
-    muuukuh = Cow("MuuuKuh")
-    paula = Cow("Paula")
-    wuffi = Wolf("Wuffi")
-    hanz = Wolf("HanZ")
-    paul = Grass("Paul")
+    grass = Grass("G")
+    paula = Cow("C")
+    wuffi = Wolf("W")
 
 
-    board = Board(80, 24)
+    board = Board(24, 80)
     board.add(paula, 0, 0)
-    board.add(hanz, 0, 1)
-    board.add(wuffi, 1, 0)
-    board.add(muuukuh, 1, 1)
-    board.add(Grassblock, 2, 0)
-    board.add(paul, 2, 1)
+    board.add(wuffi, 1, 1)
+    board.add(grass, 2, 0)
 
-    print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
-    print(f"{Grassblock.name} has {Grassblock.hp} hp with ID {Grassblock.id}")
-    print(f"{muuukuh.name} has {muuukuh.hp} hp with ID {muuukuh.id}")
-    print(f"{wuffi.name} has {wuffi.hp} hp with ID {wuffi.id}")
-    print()
-    print("\033[1m" + "\033[4m" + "Infos über Vergleich" + "\033[0m")
-    print(equals(muuukuh, wuffi))
-    print()
-    print("\033[1m" + "\033[4m" + "Infos über Board" + "\033[0m")
-    board.printboard()
+    #print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
+    #print(f"{grass.name} has {grass.hp} hp with ID {grass.id}")
+    #print(f"{paula.name} has {paula.hp} hp with ID {paula.id}")
+    #print(f"{wuffi.name} has {wuffi.hp} hp with ID {wuffi.id}")
+    #print()
+    #print("\033[1m" + "\033[4m" + "Infos über Vergleich" + "\033[0m")
+    #print(equals(paula, wuffi))
+    #print()
+    #print("\033[1m" + "\033[4m" + "Infos über Board" + "\033[0m")
+    #board.printboard()
+
+    while True:
+        time.sleep(2)
+        board.add(grass, 14, 50)
+        print("\033[H" + board.printboard())
+
