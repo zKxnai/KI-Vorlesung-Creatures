@@ -2,6 +2,7 @@ import os
 import time
 from random import randrange
 
+
 class Creatures:
     def __init__(self, name):
         """print("Constructor of Class Creatures")"""
@@ -72,6 +73,22 @@ def equals(typea, typeb):
         return "No Twins"
 
 
+def movedAnimals():
+    movedAnimals = []
+    for i in range(board.y):
+        for j in range(board.x):
+            k = 0
+            while k < len(board.boardField[j, i]):
+                if (board.boardField[j, i][k].value == 2 or board.boardField[j, i][k].value == 3):
+                    x, y = board.boardField[j, i][k].randomMoveRequest(j, i, board.x, board.y)
+                    creaturesToMove = board.boardField[j, i].pop(k)
+                    k -= 1
+                    movedAnimals.append([x, y, creaturesToMove])
+                k += 1
+    for i in range(len(movedAnimals)):
+        board.add(movedAnimals[i][2], movedAnimals[i][0], movedAnimals[i][1])
+
+
 class Board:
     def __init__(self, x, y):
         self.x = x
@@ -88,12 +105,6 @@ class Board:
         else:
             print("Out of range")
 
-    #def get(self, x, y):
-        #if x < self.x and y < self.y:
-            #return self.boardField[x][y]
-        #else:
-            #print("Out of range")
-
     def remove(self, x, y):
         if x <= self.x and y <= self.y:
             for creatures in self.boardField[x, y]:
@@ -109,11 +120,11 @@ class Board:
                 if len(self.boardField[j, i]) > 0:
                     highestCreature = max(content.value for content in self.boardField[j, i])
                     if highestCreature == 1:
-                        boardString += "🍒" #Grass
+                        boardString += "🍒"  # Grass
                     elif highestCreature == 2:
-                        boardString += "😱" #Cow
+                        boardString += "😱"  # Cow
                     elif highestCreature == 3:
-                        boardString += "👻" #Wolf
+                        boardString += "👻"  # Wolf
                     else:
                         print("Error")
                 else:
@@ -122,63 +133,68 @@ class Board:
         return boardString
 
 
+def hunting():
+    for i in range(board.y):
+        for j in range(board.x):
+            if len(board.boardField[j, i]) > 1:
+                highestCreature = max(content.value for content in board.boardField[j, i])
+                if highestCreature == 3:
+                    for creatures in board.boardField[j, i]:
+                        if creatures.value == 2:
+                            board.boardField[j, i].remove(creatures)
+                            killed.append(creatures)
+                            #print("\033[27;1HWolf killed a cow.")
+                            break
+                elif highestCreature == 2:
+                    for creatures in board.boardField[j, i]:
+                        if creatures.value == 1:
+                            board.boardField[j, i].remove(creatures)
+                            killed.append(creatures)
+                            #print("\033[27;1HCow killed 1G.")
+                            break
+
+def transformKilled():
+    returnString = ""
+    strWolf = 0
+    strCow = 0
+    strGrass = 0
+
+    for i in range(len(killed)):
+        if killed[i].value == 3:
+            strWolf += 1
+        elif killed[i].value == 2:
+            strCow += 1
+        elif killed[i].value == 1:
+            strGrass += 1
+
+    return returnString + "Ghosts: " + str(strWolf) + " Pacman: " + str(strCow) + " Cherries: " + str(strGrass)
+
+
 if __name__ == "__main__":
+    os.system("cls" if os.name == "nt" else "clear")
+    killed = []
+
+    #Creating the board and content
     grass = Grass("P")
     paula = Cow("C")
     wuffi = Wolf("W")
-    grass1 = Grass("P1")
-    paula1 = Cow("C1")
-    wuffi1 = Wolf("W1")
-    grass2 = Grass("P2")
-    wuffi2 = Wolf("W2")
-    wuffi3 = Wolf("W3")
-    tics = 2
-
 
     board = Board(80, 24)
     board.add(paula, 0, 0)
-    board.add(wuffi, 1, 1)
     board.add(grass, 2, 1)
-    board.add(wuffi1, 4, 1)
-    board.add(grass1, 25, 10)
-    board.add(wuffi2, 7, 1)
-    board.add(grass2, 58, 17)
-    board.add(wuffi3, 10, 1)
-
-    for i in range(20):
+    board.add(grass, 25, 10)
+    board.add(grass, 58, 17)
+    for i in range(10):
         board.add(Wolf("W"), 35, i)
-
 
     print()
 
-    os.system("clear")
-
-    #print("\033[1m" + "\033[4m" + "Infos über Creatures" + "\033[0m")
-    #print(f"{grass.name} has {grass.hp} hp with ID {grass.id}")
-    #print(f"{paula.name} has {paula.hp} hp with ID {paula.id}")
-    #print(f"{wuffi.name} has {wuffi.hp} hp with ID {wuffi.id}")
-    #print()
-    #print("\033[1m" + "\033[4m" + "Infos über Vergleich" + "\033[0m")
-    #print(equals(paula, wuffi))
-    #print()
-    #print("\033[1m" + "\033[4m" + "Infos über Board" + "\033[0m")
-    #board.printboard()
-
+    #Printing board and content with functions
     while True:
-        time.sleep(tics)
-        movedAnimals = []
-        for i in range(board.y):
-            for j in range(board.x):
-                k = 0
-                while k < len(board.boardField[j, i]):
-                    if (board.boardField[j, i][k].value == 2 or board.boardField[j, i][k].value == 3):
-                        x, y = board.boardField[j, i][k].randomMoveRequest(j, i, board.x, board.y)
-                        kreaturToMove = board.boardField[j, i].pop(k)
-                        k -= 1
-                        movedAnimals.append([x, y, kreaturToMove])
-                    k += 1
-        for i in range(len(movedAnimals)):
-            board.add(movedAnimals[i][2], movedAnimals[i][0], movedAnimals[i][1])
+        time.sleep(0.1)
 
-        print("\033[H" + board.printboard())
+        movedAnimals()
+        hunting()
+        transformKilled()
+        print("\033[H" + "\033[1m" + "\033[4m" + "Boardgame" + "\n" + "\033[K" + "\033[0m" + board.printboard() + "\n" + "\n" + "Killed following animals: " + transformKilled())
 

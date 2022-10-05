@@ -46,3 +46,6 @@ Beispiel:
 ```
 t.b.a
 ```
+
+## Übung 6
+Jagen...
