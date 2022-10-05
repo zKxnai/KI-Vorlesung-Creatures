@@ -40,7 +40,7 @@ board.printboard()
 ```
 
 ## Übung 4
-Boardaktualisierung ohne Flackern.
+Boardaktualisierung mit zufälligen Bewegungen der Tiere ohne Flackern.
 
 Beispiel:
 ```

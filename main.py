@@ -1,5 +1,6 @@
 import os
 import time
+from random import randrange
 
 class Creatures:
     def __init__(self, name):
@@ -24,8 +25,28 @@ class Animal(Creatures):
         super().__init__(name)
         self.hp = 0
 
-    def moveRequest(self):
-        print(self.name + " sent a move request")
+    def randomMoveRequest(self, x, y, sizeX, sizeY):
+        match randrange(4):
+            case 0:  # left
+                if x - 1 == -1:  # too far => go to other end
+                    return sizeX - 1, y
+                else:
+                    return x - 1, y
+            case 1:  # right
+                if x + 1 == sizeX:  # too far => go to other end
+                    return 0, y
+                else:
+                    return x + 1, y
+            case 2:  # down
+                if y + 1 == sizeY:  # too far => go to other end
+                    return x, 0
+                else:
+                    return x, y + 1
+            case 3:  # up
+                if y - 1 == -1:  # too far => go to other end
+                    return x, sizeY - 1
+                else:
+                    return x, y - 1
 
 
 class Cow(Animal):
@@ -88,15 +109,15 @@ class Board:
                 if len(self.boardField[j, i]) > 0:
                     highestCreature = max(content.value for content in self.boardField[j, i])
                     if highestCreature == 1:
-                        boardString += "P"
+                        boardString += "🍒" #Grass
                     elif highestCreature == 2:
-                        boardString += "C"
+                        boardString += "😱" #Cow
                     elif highestCreature == 3:
-                        boardString += "W"
+                        boardString += "👻" #Wolf
                     else:
                         print("Error")
                 else:
-                    boardString += "."
+                    boardString += "⬛️"
         boardString += "\n"
         return boardString
 
@@ -105,13 +126,28 @@ if __name__ == "__main__":
     grass = Grass("P")
     paula = Cow("C")
     wuffi = Wolf("W")
+    grass1 = Grass("P1")
+    paula1 = Cow("C1")
+    wuffi1 = Wolf("W1")
+    grass2 = Grass("P2")
+    wuffi2 = Wolf("W2")
+    wuffi3 = Wolf("W3")
     tics = 2
 
 
     board = Board(80, 24)
     board.add(paula, 0, 0)
     board.add(wuffi, 1, 1)
-    board.add(grass, 2, 0)
+    board.add(grass, 2, 1)
+    board.add(wuffi1, 4, 1)
+    board.add(grass1, 25, 10)
+    board.add(wuffi2, 7, 1)
+    board.add(grass2, 58, 17)
+    board.add(wuffi3, 10, 1)
+
+    for i in range(20):
+        board.add(Wolf("W"), 35, i)
+
 
     print()
 
@@ -130,7 +166,19 @@ if __name__ == "__main__":
 
     while True:
         time.sleep(tics)
-        print("\033[H" + board.printboard())
+        movedAnimals = []
+        for i in range(board.y):
+            for j in range(board.x):
+                k = 0
+                while k < len(board.boardField[j, i]):
+                    if (board.boardField[j, i][k].value == 2 or board.boardField[j, i][k].value == 3):
+                        x, y = board.boardField[j, i][k].randomMoveRequest(j, i, board.x, board.y)
+                        kreaturToMove = board.boardField[j, i].pop(k)
+                        k -= 1
+                        movedAnimals.append([x, y, kreaturToMove])
+                    k += 1
+        for i in range(len(movedAnimals)):
+            board.add(movedAnimals[i][2], movedAnimals[i][0], movedAnimals[i][1])
 
-        board.add(grass, 50, 20)
+        print("\033[H" + board.printboard())
 
