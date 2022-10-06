@@ -132,6 +132,11 @@ class Board:
         boardString += "\n"
         return boardString
 
+def first(iterable, conditions=lambda x: True):
+    try:
+        return next(x for x in iterable if conditions(x))
+    except StopIteration:
+        return None
 
 def hunting():
     for i in range(board.y):
@@ -139,19 +144,37 @@ def hunting():
             if len(board.boardField[j, i]) > 1:
                 highestCreature = max(content.value for content in board.boardField[j, i])
                 if highestCreature == 3:
+                    foundwolf, foundcow = False, False
                     for creatures in board.boardField[j, i]:
-                        if creatures.value == 2:
-                            board.boardField[j, i].remove(creatures)
-                            killed.append(creatures)
-                            #print("\033[27;1HWolf killed a cow.")
-                            break
+                        if not foundcow:
+                            if creatures.value == 2:
+                                board.boardField[j, i].remove(creatures)
+                                killed.append(creatures)
+                                #print("\033[27;1HWolf killed a cow.")
+                                foundcow = True
+                        if not foundwolf and first(board.boardField[j, i], lambda x: x.value == 2):
+                            if creatures.value == 3:
+                                if creatures.hp < 200:
+                                    creatures.hp += 50
+                                foundwolf = True
                 elif highestCreature == 2:
+                    foundcow, foundgrass = False, False
                     for creatures in board.boardField[j, i]:
-                        if creatures.value == 1:
-                            board.boardField[j, i].remove(creatures)
-                            killed.append(creatures)
-                            #print("\033[27;1HCow killed 1G.")
-                            break
+                        if not foundgrass:
+                            if creatures.value == 1:
+                                if creatures.hp > 5:
+                                    creatures.hp -= 5
+                                else:
+                                    board.boardField[j, i].remove(creatures)
+                                    killed.append(creatures)
+                                    #print("\033[27;1HCow ate some grass.")
+                                foundgrass = True
+                        if not foundcow and first(board.boardField[j, i], lambda x: x.value == 1):
+                            if creatures.value == 2:
+                                if creatures.hp < 400:
+                                    creatures.hp += 10
+                                foundcow = True
+
 
 def transformKilled():
     returnString = ""
@@ -169,32 +192,35 @@ def transformKilled():
 
     return returnString + "Ghosts: " + str(strWolf) + " Pacman: " + str(strCow) + " Cherries: " + str(strGrass)
 
+def AnimalHP():
+    for i in range(board.y):
+        for j in range(board.x):
+            for creatures in board.boardField[j, i]:
+                print(creatures.name + " HP: " + str(creatures.hp) + "\033[K")
+
 
 if __name__ == "__main__":
     os.system("cls" if os.name == "nt" else "clear")
     killed = []
 
     #Creating the board and content
-    grass = Grass("P")
-    paula = Cow("C")
-    wuffi = Wolf("W")
-
     board = Board(80, 24)
-    board.add(paula, 0, 0)
-    board.add(grass, 2, 1)
-    board.add(grass, 25, 10)
-    board.add(grass, 58, 17)
-    for i in range(10):
-        board.add(Wolf("W"), 35, i)
+    board.add(Cow("Pacman"), 2, 2)
+    board.add(Grass("Cherry"), 2, 1)
+    board.add(Grass("Cherry"), 25, 10)
+    board.add(Grass("Cherry"), 58, 17)
+    for i in range(4):
+        board.add(Wolf("Ghost"), 35, i)
 
     print()
 
     #Printing board and content with functions
     while True:
-        time.sleep(0.1)
+        time.sleep(0.01)
 
         movedAnimals()
         hunting()
         transformKilled()
-        print("\033[H" + "\033[1m" + "\033[4m" + "Boardgame" + "\n" + "\033[K" + "\033[0m" + board.printboard() + "\n" + "\n" + "Killed following animals: " + transformKilled())
-
+        print("\033[H\033[1m\033[4mBoardgame\n\033[K\033[0m" + board.printboard()
+              + "\n\nKilled following animals: "+ transformKilled())
+        AnimalHP()

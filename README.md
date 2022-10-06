@@ -48,4 +48,7 @@ t.b.a
 ```
 
 ## Übung 6
-Jagen...
+Creatures jagen sich und HP passen sich an.
+
+## Übung 7
+...
