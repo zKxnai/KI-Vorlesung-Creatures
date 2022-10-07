@@ -51,4 +51,4 @@ t.b.a
 Creatures jagen sich und HP passen sich an.
 
 ## Übung 7
-...
+Test
