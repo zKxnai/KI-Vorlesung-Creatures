@@ -176,6 +176,14 @@ def hunting():
                                 foundcow = True
 
 
+def analyze(x, y):
+    for i in range(5):
+        for j in range(5):
+            for k in board.boardField[(x - 2) + i, (y - 2) + j]:
+                if k.value == 1:
+                    print("Grass found at: " + str((x - 2) + i) + ", " + str((y - 2) + j))
+
+
 def transformKilled():
     returnString = ""
     strWolf = 0
@@ -205,8 +213,8 @@ if __name__ == "__main__":
 
     #Creating the board and content
     board = Board(80, 24)
-    board.add(Cow("Pacman"), 2, 2)
-    board.add(Grass("Cherry"), 2, 1)
+    board.add(Cow("Pacman"), 2, 3)
+    board.add(Grass("Cherry"), 2, 2)
     board.add(Grass("Cherry"), 25, 10)
     board.add(Grass("Cherry"), 58, 17)
     for i in range(4):
@@ -216,7 +224,7 @@ if __name__ == "__main__":
 
     #Printing board and content with functions
     while True:
-        time.sleep(0.01)
+        time.sleep(0.1)
 
         movedAnimals()
         hunting()
@@ -224,3 +232,10 @@ if __name__ == "__main__":
         print("\033[H\033[1m\033[4mBoardgame\n\033[K\033[0m" + board.printboard()
               + "\n\nKilled following animals: "+ transformKilled())
         AnimalHP()
+
+        #Analyze kann noch nicht über Ränder hinaus
+        for i in range(board.y):
+            for j in range(board.x):
+                for k in board.boardField[j, i]:
+                    if k.value == 2:
+                        analyze(j, i)

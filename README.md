@@ -1,3 +1,5 @@
+# W.I.P - Incomplete - Discontinued
+
 # AI-Lecture-Creatures
 Python Programm für die Übungsaufgabe, die aufeinander aufbauen.
 
@@ -42,13 +44,15 @@ board.printboard()
 ## Übung 4
 Boardaktualisierung mit zufälligen Bewegungen der Tiere ohne Flackern.
 
-Beispiel:
-```
-t.b.a
-```
-
 ## Übung 6
-Creatures jagen sich und HP passen sich an.
+Creatures "jagen" sich und HP passen sich an.
 
-## Übung 7
-Test
+## Übung 8
+Smelly GOB Implementation
+
+## Übung 9
+Smelly GOB Implementation mit Jagen.
+Kuh nach Grass, Wolf nach Kuh.
+
+## Übung 10
+...
